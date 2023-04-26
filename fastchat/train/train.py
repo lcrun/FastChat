@@ -95,7 +95,7 @@ def preprocess(
                 conv.append_message(role, sentence["value"])
             conversations.append(conv.get_prompt())
         except:
-            print(f"***skip*** i: {i}, source[0]['from']:{source[0]['from']}, conv.roles[0]:{conv.roles[0]}, conv.roles[1]:{conv.roles[1]}.")
+            print(f"***skip*** i: {i}, source[0]['from']:{source[0]['from']}, conv.roles[0]:{conv.roles[0]}, conv.roles[1]:{conv.roles[1]}.  source: {source} ")
 
     # Tokenize conversations
     input_ids = tokenizer(
