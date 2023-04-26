@@ -83,16 +83,19 @@ def preprocess(
     # Apply prompt templates
     conversations = []
     for i, source in enumerate(sources):
-        if roles[source[0]["from"]] != conv.roles[0]:
-            # Skip the first one if it is not from human
-            source = source[1:]
+        try:
+            if roles[source[0]["from"]] != conv.roles[0]:
+                # Skip the first one if it is not from human
+                source = source[1:]
 
-        conv.messages = []
-        for j, sentence in enumerate(source):
-            role = roles[sentence["from"]]
-            assert role == conv.roles[j % 2], f"i: {i}, role:{role}, j:{j}, conv.roles j 2:{conv.roles[j % 2]}, sentence[value]: {sentence['value']}  "
-            conv.append_message(role, sentence["value"])
-        conversations.append(conv.get_prompt())
+            conv.messages = []
+            for j, sentence in enumerate(source):
+                role = roles[sentence["from"]]
+                assert role == conv.roles[j % 2], f"i: {i}, role:{role}, j:{j}, conv.roles j 2:{conv.roles[j % 2]}, sentence[value]: {sentence['value']}  "
+                conv.append_message(role, sentence["value"])
+            conversations.append(conv.get_prompt())
+        except:
+            print(f"***skip*** i: {i}, source[0]['from']:{source[0]['from']}, conv.roles[0]:{conv.roles[0]}, conv.roles[1]:{conv.roles[1]}.")
 
     # Tokenize conversations
     input_ids = tokenizer(
