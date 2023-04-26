@@ -197,13 +197,20 @@ class LazySupervisedDataset(Dataset):
         if i in self.cached_data_dict:
             return self.cached_data_dict[i]
 
-        ret = preprocess([self.raw_data[i]["conversations"]], self.tokenizer)
-        ret = dict(
-            input_ids=ret["input_ids"][0],
-            labels=ret["labels"][0],
-            attention_mask=ret["attention_mask"][0],
-        )
-        self.cached_data_dict[i] = ret
+        try:
+            ret = preprocess([self.raw_data[i]["conversations"]], self.tokenizer)
+
+            ret = dict(
+                input_ids=ret["input_ids"][0],
+                labels=ret["labels"][0],
+                attention_mask=ret["attention_mask"][0],
+            )
+            self.cached_data_dict[i] = ret
+        except:
+            print(f"Error during processing the conversation {self.raw_data[i]['conversations']}")
+        finally:
+            keys = self.cached_data_dict.keys()
+            return self.cached_data_dict[keys[0]]
 
         return ret
 
