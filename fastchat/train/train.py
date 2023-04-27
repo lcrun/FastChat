@@ -209,7 +209,8 @@ class LazySupervisedDataset(Dataset):
         except:
             print(f"Error during processing the conversation {self.raw_data[i]['conversations']}")
         finally:
-            key = list(self.cached_data_dict.keys())[0]
+            import random
+            key = random.choice(list(self.cached_data_dict.keys()))
             return self.cached_data_dict[key]
 
         return ret
